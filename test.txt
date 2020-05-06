@@ -1,0 +1,2 @@
+None, P38, P38 Lightning, Great plane.
+None, P51, P51 Mustang, Great plane.

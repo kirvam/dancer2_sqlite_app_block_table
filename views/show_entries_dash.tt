@@ -1,0 +1,78 @@
+[% IF session.logged_in %]
+    <form action="[% add_entry_url %]" method=post class=add-entry>
+      <dl>
+        <dt>Parent:</dt>
+        <dd><input type=text size=30 name=parent></dd>
+        <dt>Entry Date:</dt>
+        <dd><input type=text size=30 name=entryDate></dd>
+        <dt>Category:</dt>
+        <select name=category>
+         <dd>
+         <option value="BLANK" size=30>--which kind--</option>
+             <option value="Initiative" size=30>Initiative</option>
+             <option value="Project" size=30>Project</option>
+             <option value="Task" size=30>Task</option>
+             <option value="Note" size=30>Note</option>
+             <option value="Metric" size=30>Metric</option>
+          </dd>
+        </select>
+        <p>
+        <dt>Title:</dt>
+        <dd><input type=text size=30 name=title>
+        <dt>Text:</dt>
+        <dd><textarea maclength=1000 placeholder="Add entry details here." autofocus name=text rows=5 cols=100></textarea>
+        <dt>Status:</dt>
+        <select name=status>
+         <dd>
+           <option value="BLANK" size=30>--status--</option>
+           <option value="Green" size=30>Green</option>
+           <option value="Yellow" size=30>Yellow/option>
+            <option value="Red" size=30>Red</option>
+          </dd>
+         </select>
+         <p>
+        <dd><input type=submit value=Share></dd>
+      </dl>
+    </form>
+  [% END %]
+<!--  
+-->
+<ul class=entries>
+  <table id="rounded-corner" summary="Listing"> 
+  [% FOR item = ToA %]
+    <tr style="background-color:#E6E6FA; color:blue;">
+    <td>[% item %]</td></tr>
+   [% END %]
+  </table>
+</ul>
+
+<br>
+<ul class=entries>
+  [% spectab %]
+  <br>
+  [% html %]
+  </ul>
+<!--
+-->
+<!--
+  <ul class=entries>
+  <table id="rounded-corner" summary="Listing"> 
+  [% IF entries.size %]
+    [% FOREACH id IN entries.keys.nsort %]
+      <tr style="background-color:#E6E6FA; color:black;">
+       <td>[% entries.$id.parent %]</td>
+       <td>[% entries.$id.entryDate %]</td>
+       <td>[% entries.$id.category %]</td>
+       <td>[% entries.$id.title %]</td>
+       <td>[% entries.$id.text %]</td>
+       <td>[% entries.$id.status %]</td>
+      </tr>
+    [% END %]
+</table>
+  [% ELSE %]
+  <p>
+    <li><em>Unbelievable.  No entries here so far</em></li>
+  </p>
+  [% END %]
+</ul>
+-->

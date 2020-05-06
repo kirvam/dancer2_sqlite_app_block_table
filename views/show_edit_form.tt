@@ -1,0 +1,15 @@
+[% IF session.logged_in %]
+    <form action="[% edit_entry_url %]" method=post class=add-entry>
+      <dl>
+        <dt>Edit Note:</dt>
+        <dd>[% id %]</dd>
+         <dd>
+          <select name=id>
+            <options value='[% id %]' size=30>[% id %]</options>
+          </select>
+         </dd>
+        <dd><textarea name=text rows=15 cols=80></textarea></dd>?
+        <dd><input type=submit value=Share></dd>
+      </dl>
+    </form>
+  [% END %]

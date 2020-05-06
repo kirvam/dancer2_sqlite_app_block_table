@@ -1,0 +1,204 @@
+/* comment
+ * */
+.link_class {
+text-decoration: none;
+}
+
+/* unvisited link */
+a:link {
+    color: black;
+    text-decoration: none;
+}
+
+/* visited link */
+a:visited {
+    color: bluegreen;
+    text-decoration: none;
+}
+
+/* mouse over link */
+a:hover {
+    color: red;
+}
+
+/* selected link */
+a:active {
+    color: blue;
+}
+
+
+body
+{
+        /* line-height: 1.6em; */
+        line-height: .7em;
+}
+
+#rounded-corner-tab
+{
+	font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+	font-size: 12px;
+        vertical-align: text-top;
+	margin: 45px;
+	width: 1080px;
+	text-align: left;
+	border-collapse: collapse;
+        float: left;
+}
+
+#rounded-corner-tab thead th.rounded-company
+{
+	background: #23ae4f left -1px no-repeat;
+}
+
+#rounded-corner-tab thead th.rounded-q4
+{
+	background: #23ae4f right -1px no-repeat;
+}
+
+#rounded-corner-tab p p.round
+{
+        font-weight: 900;
+        font-size: 18px;
+        color: #039;
+}     
+
+#sub-round p 
+{       
+        font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+        padding: 4px;
+        font-weight: normal;
+        font-size: 18px;
+        color: #039;
+        background: #23ea4f;
+}
+
+#rounded-corner-tab th  
+{
+	padding: 8px;
+	font-weight: normal;
+	font-size: 13px;
+	color: #010f05;
+	background: #23ea4f;
+}
+
+#rounded-corner-tab td a
+{
+	padding: 8px;
+	background: #e8edff;
+	border-top: 1px solid #fff;
+	color: #010f05;
+        vertical-align: top;
+}
+
+#rounded-corner-tab tfoot td.rounded-foot-left
+{
+	background: #e8edff left bottom no-repeat;
+}
+
+#rounded-corner-tab tfoot td.rounded-foot-right
+{
+	background: #e8edff right bottom no-repeat;
+}
+
+#rounded-corner-tab tbody tr:hover td
+{
+	background: #e2f9ef;
+}
+
+
+#rounded-corner
+{
+	font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+	font-size: 12px;
+        vertical-align: text-top;
+	margin: 45px;
+	width: 1060px;
+	text-align: left;
+	border-collapse: collapse;
+        float: left;
+}
+
+#rounded-corner thead th.rounded-company
+{
+	background: #046d1b left -1px no-repeat;
+}
+
+#rounded-corner thead th.rounded-q4
+{
+	background: #b9c9fe url('table-images/right.png') right -1px no-repeat;
+}
+
+#rounded-corner p p.round
+{
+        font-weight: 900;
+        font-size: 18px;
+        color: #039;
+}     
+
+#sub-round p 
+{       
+        font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+        padding: 4px;
+        font-weight: normal;
+        font-size: 18px;
+        color: #039;
+        background: #b9c9fe;
+}
+
+#rounded-corner th  
+{
+	padding: 8px;
+	font-weight: normal;
+	font-size: 13px;
+	color: #fff8dc;
+	background: #b9c9fe;
+}
+
+#rounded-corner td
+{
+	padding: 7px;
+	background: #e4f6ea;
+	border-top: 1px solid #fff;
+	color: #010f05;
+        vertical-align: top;
+}
+
+#rounded-corner tfoot td.rounded-foot-left
+{
+	background: #e8edff url('table-images/botleft.png') left bottom no-repeat;
+}
+
+#rounded-corner tfoot td.rounded-foot-right
+{
+	background: #e8edff url('table-images/botright.png') right bottom no-repeat;
+}
+
+#rounded-corner tbody tr:hover td
+{
+	background: #b4ddc9;
+}
+
+a.one:link { 
+  background-color: #046d1b; 
+  color: white; 
+  padding: 14px 25px; 
+  text-align: center; 
+  text-decoration: none; 
+  display: inline-block;
+}
+ 
+a.one:visited {
+  background-color: #046d1b; 
+  color: white; 
+  padding: 14px 25px; 
+  text-align: center; 
+  text-decoration: none; 
+  display: inline-block;
+}
+
+a.one:hover  {
+  background-color: #f44336;
+}
+a.one:active {
+  background-color: red;
+

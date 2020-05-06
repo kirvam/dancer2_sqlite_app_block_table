@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-type" content="text/html; charset=<% settings.charset %>" />
+<title>CS Weekly Report Entry Form</title>
+<link rel="stylesheet" type=text/css href="[% css_url %]" />
+
+<!-- Grab jQuery from a CDN, fall back to local if necessary -->
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<script type="text/javascript">/* <![CDATA[ */
+    !window.jQuery && document.write('<script type="text/javascript" src="[% css_url %]/javascripts/jquery.js"><\/script>')
+/* ]]> */</script>
+
+<style>
+body {
+    background-color: #ddd;
+}
+
+@media screen and (min-width: 480px) {
+    body {
+        background-color: cornflower;
+    }
+}
+</style>
+</head>
+
+  <body>
+    <div class=page>
+    <h1>CS Weekly Report Entry Form</h1>
+       <div class=metanav>
+       [% IF not session.logged_in %]
+         <a href="[% login_url %]">log in</a>
+       [% ELSE %]
+         <a href="[% logout_url %]">log out</a>
+       [% END %]
+    </div>
+    [% IF msg %]
+      <div class=flash> [% msg %] </div>
+    [% END %]
+    [% content %]
+  </div>
+</body>
+</html>

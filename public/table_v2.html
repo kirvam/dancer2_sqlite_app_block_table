@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-type" content="text/html; charset=<% settings.charset %>" />
+
+<title>CS Project Dashboard</title>
+<link rel="stylesheet" href="http://10.80.8.12:443/css/style.css" />
+
+<!-- Grab jQuery from a CDN, fall back to local if necessary -->
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<script type="text/javascript">/* <![CDATA[ */
+    !window.jQuery && document.write('<script type="text/javascript" src="http://10.80.8.12:443/css/style.css/javascripts/jquery.js"><\/script>')
+/* ]]> */</script>
+<!-- End Comments -->
+
+<style>
+body {
+    background-color: #ddd;
+}
+
+@media screen and (min-width: 480px) {
+    body {
+        background-color: cornflower;
+    }
+}
+</style>
+</head>
+
+<body>
+  <div class=page>
+  <h1>CS Update Dashboard</h1>
+     <div class=metanav>
+     </div>
+  
+     <table id="rounded-corner" summary="Listing">
+     <tbody bgcolor="#ffd"> 
+
+                <tr style="background-color:darkblue; color:white;">
+                     <td>Heading OR Date</td>
+                     <td>Staff</td>
+                     <td>Parent</td>
+                     <td>Note</td>
+                     <td>Progress</td>
+                </tr>
+      </tbody>
+<!--  USE SortNatural;
+-->
+
+<!-- Start Heading -->  
+       <tbody>
+       <tr style="background-color:#E6E6FA; color:black;">
+        <td>Business Continuity and Disaster Recovery (BC/DR)</td>
+       </tr>
+       </tbody>
+<!-- Start Listing -->       
+       <tbody bgcolor="#ffd"> 
+         <tr class="flip"; style="background-color:lightblue; color:black;">
+         <td>11-07-2017</td>
+         <td>KEN</td>
+         <td>Business Continuity and Disaster Recovery (BC/DR)</td>
+         <td>Still need to meet with Secretary.</td>
+         <td>Green </td>
+         </tr>
+        </tbody>
+<!-- Flip Start -->
+        <tbody class="section" style="display: none;">
+         <tr>
+         <td>10-31-2017</td>
+         <td>KEN</td>
+         <td>Business Continuity and Disaster Recovery (BC/DR)</td>
+         <td>Assembling the spreadsheet Tom B gave me of their systems and putting into BIA format.</td>
+         <td>Green </td>      
+         </tr>
+
+         <tr>
+         <td>10-20-2017</td>
+         <td>KEN</td>
+         <td>Business Continuity and Disaster Recovery (BC/DR)</td>
+         <td>Assembling the spreadsheet Tom B gave me of their systems and putting into BIA format.</td>
+         <td>Green </td>      
+         </tr>
+       </tbody
+<!-- Flip End -->   
+
+<!-- Start Heading -->  
+       <tbody>
+       <tr style="background-color:#E6E6FA; color:black;">
+        <td>Cloud Design</td>
+       </tr>
+       </tbody>
+<!-- Start Listing -->       
+       <tbody bgcolor="#ffd"> 
+         <tr class="flip"; style="background-color:lightblue; color:black;">
+         <td>10-31-2017</td>
+         <td>JON</td>
+         <td>Cloud Design</td>
+         <td>On hold awaiting VPN implmentation and test plan for Edge protection.  Minor experimentation is on going based upon input from tarining.</td>
+         <td>Green </td>
+         </tr>
+        </tbody>
+<!-- Flip Start -->
+<!-- Flip End -->   
+
+  </table>
+</div>
+
+<script>
+$('.flip').click(function() {
+    $(this)
+        .closest('tbody')
+        .next('.section')
+        .toggle('fast');
+});
+</script>
+
+<!--
+-->
+
+
+
+</div>
+
+<!-- </ul> -->
+
+
+</div>
+</body>
+</html>
+

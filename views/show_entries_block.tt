@@ -1,0 +1,18 @@
+[% IF session.logged_in %]
+    <form action="[% add_entry_url %]" method=post class=add-entry>
+      <dl>
+        <dt>Insert Block (Rows) of Text:
+        <dd><textarea name=text rows=15 cols=80></textarea>
+        <dd><input type=submit value=Share>
+      </dl>
+    </form>
+  [% END %]
+  <ul class=entries>
+  [% IF entries.size %]
+    [% FOREACH id IN entries.keys.nsort %]
+      <li>[% entries.$id.parent %]&semi; [% entries.$id.entryDate %]&semi; [% entries.$id.category %]&semi; [% entries.$id.title %]&semi; [% entries.$id.text %]&semi; [% entries.$id.status %]
+    [% END %]
+  [% ELSE %]
+    <li><em>Unbelievable.  No entries here so far</em>
+  [% END %]
+</ul>
