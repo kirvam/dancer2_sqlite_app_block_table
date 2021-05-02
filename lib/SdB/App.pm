@@ -596,6 +596,17 @@ post '/addTESTB' => sub {
     redirect '/TESTB';
 };
 
+post '/addTESTD' => sub {
+    if ( not session('logged_in') ) {
+        send_error("Not logged in", 401);
+    }
+    my $db = connect_db();
+    my $sql = 'insert into entries (parent, entryDate, title, category, text, status) values (?, ?, ?, ?, ?, ?)';
+    my $sth = $db->prepare($sql) or die $db->errstr;
+    $sth->execute(params->{'parent'},params->{'entryDate'},params->{'title'},params->{'category'},params->{'text'},params->{'status'}) or die $sth->errstr;
+    set_flash('<H3>New TESTB entry posted!</H3>');
+    redirect '/TESTD';
+};
 
 post '/add' => sub {
     if ( not session('logged_in') ) {

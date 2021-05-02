@@ -10,6 +10,7 @@ use lib "$FindBin::Bin/../lib";
 use SdB::App;
 use SdB::TESTB;  ###
 use SdB::TESTC;  ###
+use SdB::TESTD;  ###
 
 SdB::App->to_app;
 
