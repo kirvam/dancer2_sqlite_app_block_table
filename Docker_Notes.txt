@@ -1,0 +1,27 @@
+LD
+
+sudo docker build -t centos_7_3_csd_v .
+sudo docker build --no-cache -t centos_7_3_csd_v .
+
+RUN
+
+sudo docker run --name cent_sql_7_3csd3 -it -p 5002:5002 centos_7_3_csd_v
+
+sudo docker run --name cent_sql_7_3csd3 -it -p 5003:5003 centos_7_3_csd_v1
+
+
+RUN WITH VOLUME
+
+sudo docker run -v /home/phaigh/data:/data --name CAPC -it -p 5004:5004 centos_7_3_csd_v
+
+sudo docker run -v /Users/phaigh/data:/data --name CAPC -it -p 5004:5004 centos_7_3_csd_v
+
+MAC version:
+
+12/08/2020
+docker run -v /Users/paulhaigh/docker/data:/data --name DEV2 -p5009:5009 -it centos_7_3_dev_v
+
+08/16/2021
+docker run -v /Users/paulhaigh/docker/data:/data --name CAPDEV2 -p5009:5009 -it c_7_3_dev_vm 
+
+
