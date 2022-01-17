@@ -19,4 +19,3 @@ create table if not exists db_entries (
     textNote string not null,
     sqlDate text
   );
-

@@ -76,6 +76,12 @@ sub init_db {
     $db->do($schema) or die $db->errstr;
 }
 
+sub init_db_2 {
+    my $db = connect_db();
+    my $schema = read_text('./schema_2.sql');
+    $db->do($schema) or die $db->errstr;
+}
+
 hook before_template_render => sub {
     my $tokens = shift;
     $tokens->{'css_url'} = request->base . 'css/style_1x.css';
@@ -529,7 +535,7 @@ post '/addblock' => sub {
         print "\$item: $item\n";
            my $clean = cleaner($item);
          # my($parent,$category,$title,$text) = split(/\;\s?/,$clean);
-          my($parent,$entryDate,$category,$title,$text,$status) = split(/\;\s?/,$clean);
+          my($parent,$entryDate,$category,$title,$text,$status) = split(/[;,]\s?/,$clean);
            chomp($parent);
            chomp($entryDate);
            chomp($category);
@@ -577,11 +583,16 @@ post '/adddbblock' => sub {
            chomp($entryTitle);
            chomp($authorName);
            chomp($textNote);
+             ##$textNote =~ s/\<br\>//g;
+             $textNote =~ s/(<br>)//g;
+               if ( $1 ){ print "####  Found and removed $1 ####\n" };
+             
+           my $sqlDate;
        
-           print "## $parent, ^$entryParent^, $entryType, $handDate, $entryTitle, $authorName, $textNote ##\n";
+           print "## $parent, ^$entryParent^, $entryType, $handDate, $entryTitle, $authorName, ^$textNote^ ##\n";
                
            my $db = connect_db_2();
-           my $sql = 'insert into db_entries (parent, entryParent, entryType, handDate, entryTitle, authorName, textNote ) values (?, ?, ?, ?, ?, ?, ?)';
+           my $sql = 'insert into db_entries (parent, entryParent, entryType, handDate, entryTitle, authorName, textNote, sqlDate ) values (?, ?, ?, ?, ?, ?, ?, datetime(\'now\', \'localtime\'))';
            print "## SQL: $sql\n";
            my $sth = $db->prepare($sql) or die $db->errstr;
            ###$sth->execute(params->{'parent'},params->{'category'},params->{'title'}, params->{'text'}) or die $sth->errstr;
@@ -590,7 +601,7 @@ post '/adddbblock' => sub {
            ###$sth->execute or die $sth->errstr;
  };
     set_flash('New entry posted!');
-    redirect '/DBBLOCK';
+    redirect '/DBBlock';
 };
 ###
 ####
@@ -739,6 +750,7 @@ get '/CapData' => sub {
 };
 
 init_db();
+init_db_2();
 start;
 ###
 
