@@ -62,6 +62,17 @@
     [% FOREACH id IN entries.keys.nsort %]
       <tr style="background-color:#E6E6FA; color:black;">
        <td>[% entries.$id.id %]</td>
+       <td>[% entries.$id.handDate %]</td>
+       <td>
+         <form action="[% edit_handDate_url %]" method=post class=add-entry>
+	     <input type=hidden value='[% entries.$id.id %]' name=id></input>
+             <label type=text id=handDate name=handDate>
+             <input type=text size=30 name=handDate>
+             </input>
+             <input type=submit value="Update">
+         </form>
+       </td>
+
        <td>[% entries.$id.parent %]</td>
        <td>[% entries.$id.entryParent %]</td>
        <td>[% entries.$id.entryType %]</td>
@@ -70,11 +81,10 @@
        <td>[% entries.$id.textNote %]</td>
        <td>[% entries.$id.sqlDate %]</td>
        <td>
-    
          <form action="[% edit_entry_url %]" method=post class=add-entry>
 	     <input type=hidden value='[% entries.$id.id %]' name=id></input>
-             <label type=text id=text name=text>
-             <input type=text size=50 name=text>
+             <label type=text id=textNote name=textNote>
+             <input type=text size=50 name=textNote>
              </input>
              <input type=submit value="Update">
          </form>

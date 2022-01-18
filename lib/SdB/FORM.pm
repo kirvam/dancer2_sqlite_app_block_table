@@ -97,7 +97,8 @@ print "====== Dumper \%hash =======\n";
 #       'add_entry_url' => uri_for('/add'),
 ###        'add_entry_url' => uri_for('/addTESTB'),
         'add_entry_url' => uri_for('/addFORM'),
-       'edit_entry_url' => uri_for('/editnote'),
+       'edit_entry_url' => uri_for('/editnote_textNote'),
+       'edit_handDate_url' => uri_for('/editnote_handDate'),
 #             'entries' => $sth->fetchall_hashref('id'),
               'entries' => $entries,
               'spectab' => $spectab,
@@ -116,6 +117,57 @@ print "====== Dumper \%hash =======\n";
 # style_ref_HoHoA_1_print_FH
 #
 ######################################
+
+post '/editnote_textNote' => sub {
+    if ( not session('logged_in') ) {
+        send_error("Not logged in", 401);
+    }
+###
+    my $string = params->{'textNote'};
+    my $id = params->{'id'};
+    chomp($string);
+    chomp($id);
+           my $string = cleaner($string);
+           my $id = cleaner($id);
+
+           my $db = connect_db();
+           #my $sql = 'insert into entries (parent, entryDate, title, category, text, status) values (?, ?, ?, ?, ?, ?)';
+           ###my $sql = 'update entries set status = \''.$string.'\' where id =\''.$id.'\'';
+           ###my $sql = "update entries set status = \'$string\' where id =\'$id\'";
+           my $sql = "update db_entries set textNote = \'$string\' where id =\'$id\'";
+           print "$sql\n";
+           my $sth = $db->prepare($sql) or die $db->errstr;
+
+           #$sth->execute(params->{'parent'},params->{'category'},params->{'title'}, params->{'text'}) or die $sth->errstr;
+           ###$sth->execute($parent,$category,$title,$text) or die $sth->errstr;
+           ###  $sth->execute($parent,$entryDate,$title,$category,$text,$status) or die $sth->errstr;
+
+           $sth->execute or die $sth->errstr;
+    set_flash('New FORM textNote Upate posted!');
+    redirect '/FORM';
+};
+###
+post '/editnote_handDate' => sub {
+    if ( not session('logged_in') ) {
+        send_error("Not logged in", 401);
+    }
+    my $string = params->{'handDate'};
+    my $id = params->{'id'};
+    chomp($string);
+    chomp($id);
+           my $string = cleaner($string);
+           my $id = cleaner($id);
+           my $db = connect_db();
+           my $sql = "update db_entries set handDate = \'$string\' where id =\'$id\'";
+           print "$sql\n";
+           my $sth = $db->prepare($sql) or die $db->errstr;
+
+           $sth->execute or die $sth->errstr;
+    set_flash('New FORM textNote Upate posted!');
+    redirect '/FORM';
+};
+
+###
 sub get_flash {
     my $msg = $flash;
     $flash = "";
@@ -386,6 +438,15 @@ any ['get', 'post'] => '/loginTESTB' => sub {
    template 'login.tt', {
        'err' => $err,
    };
+};
+
+sub cleaner {
+my($item) = @_;
+ if ($item =~ s/[\x0a\x0d]/\<br\>/g){
+   print "Found NL\n";
+  };
+ print "cleaner: $item\n";
+ return $item;
 };
 
 
