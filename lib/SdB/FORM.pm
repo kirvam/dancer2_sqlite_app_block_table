@@ -105,6 +105,7 @@ print "====== Dumper \%hash =======\n";
                  'html' => $html,
            'listParent' => \@AoAParent,
    'listDistinctParent' => $listDistinctParent,
+             'db_array' => \@array,
 #               'array' => \@array,
                 'array' => \@AoAarray,
     };
@@ -404,7 +405,9 @@ post '/addFORM' => sub {
     my $sth = $db->prepare($sql) or die $db->errstr;
 
       ###$sth->execute(params->{'parent'},params->{'entryDate'},params->{'title'},params->{'category'},params->{'text'},params->{'status'}) or die $sth->errstr;
-      $sth->execute(params->{'parent'},params->{'parent'},params->{'entryType'},params->{'handDate'},params->{'entryTitle'},params->{'authorName'},params->{'textNote'}) or die $sth->errstr;
+      $sth->execute(params->{'eparent'},params->{'eparent'},params->{'entryType'},params->{'handDate'},params->{'entryTitle'},params->{'authorName'},params->{'textNote'}) or die $sth->errstr;
+      ###$sth->execute(params->{'parent'},params->{'entryTitle'},params->{'entryType'},params->{'handDate'},params->{'entryTitle'},params->{'authorName'},params->{'textNote'}) or die $sth->errstr;
+
 
        set_flash('New FORM entry posted!');
        redirect '/FORM';

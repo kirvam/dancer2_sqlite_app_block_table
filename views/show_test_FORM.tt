@@ -11,6 +11,21 @@
          </select>
         </dd>
 <p>
+<!-- ADDED eparent to get away from "none" design -not need if you assume first entry is parent using date.
+-->
+<label>Enter new Parent of select list:
+<input list="eparent" name="eparent" /></label>
+<datalist id="eparent">
+               [% FOREACH ii IN db_array %]
+                <option value="[% ii %]">
+               [% END %]
+</datalist>
+
+<p>
+<!--
+-->
+
+
         <dt>Category:</dt>
         <select name=entryType>
          <dd>
