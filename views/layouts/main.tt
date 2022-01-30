@@ -27,7 +27,19 @@ body {
 
   <body>
     <div class=page>
+<!--
     <h1>CS Weekly Report Entry Form</h1>
+-->
+<p>
+<center>
+<strong>
+ <a href="/FORM">FORM</a> 
+
+</strong>
+</center>
+<p>
+    <h1>Sqlite Dancer App</h1>
+
        <div class=metanav>
        [% IF not session.logged_in %]
          <a href="[% login_url %]">log in</a>
