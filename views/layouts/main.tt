@@ -33,8 +33,13 @@ body {
 <p>
 <center>
 <strong>
- <a href="/FORM">FORM</a> 
-
+<h2 style="background-color:white;color:blue" >
+ <a href="/FORM" title="Entry FORM">FORM</a> 
+|
+ <a href="/DBBlock" title="Entry for BLOCK of entries">DBBlock</a> 
+|
+ <a href="/DBDash" title="Dashboard">DBDash</a> 
+</h2>
 </strong>
 </center>
 <p>
