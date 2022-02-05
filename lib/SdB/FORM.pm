@@ -10,6 +10,7 @@ use Data::Dumper;
 my %hash;
 my @array;
 my $flash;
+my $date = create_date_string();
 
 sub set_flash {
     my $message = shift;
@@ -276,7 +277,7 @@ my($hash_ref,$html) = @_;
 open  my ($fh), '>', \$html || die "Flaming death on open of $html: $! \n";
 print "\n\n";
 print $fh "<meta http-equiv=\"Content-type\" content=\"text/html; charset=<% settings.charset %>\" />\n";
-print $fh "<title>CS Project Dashboard</title>\n";
+print $fh "<title>Dashboard</title>\n";
 print $fh "<!-- Grab jQuery from a CDN, fall back to local if necessary -->\n";
 print $fh "<script src=\"//code.jquery.com/jquery-1.11.1.min.js\"></script>\n";
 print $fh "<!-- End Comments -->\n";
@@ -298,7 +299,7 @@ my $big_string = "
     <!--
     <div class=page>
     -->
-    <h1>CS Reporting</h1>
+    <h1>Summary of Entries -Reporting</h1>
        <div class=metanav>
     <!--
     </div>
@@ -309,10 +310,11 @@ my $big_string = "
 print $fh "$big_string";
 print $fh "<thead bgcolor=\"#ffd\">\n";
 print $fh "<tr style=\"background-color:darkblue; color:white;\">\n";
-print $fh "<td>Heading</td>\n";
-print $fh "<td>Date</td>\n";
+print $fh "<td>Date -handDate</td>\n";
+print $fh "<td>Parent Entry</td>\n";
 print $fh "<td>Staff</td>\n";
 print $fh "<td>Note</td>\n";
+print $fh "<td>DB date</td>\n";
 print $fh "</tr>\n";
 print $fh "</thead>\n";
 foreach my $key ( sort keys %$hash_ref ){
@@ -545,6 +547,23 @@ my($item) = @_;
   };
  print "cleaner: $item\n";
  return $item;
+};
+
+sub create_date {
+  my($day, $month, $year)=(localtime)[3,4,5];
+  # my $date = "$day-".($month+1)."-".($year+1900);
+  my $date = ($month+1)."-"."$day-".($year+1900);
+  # print "$date\n";
+  return($date);
+};
+
+sub create_date_string {
+  my($mday, $month, $year)=(localtime)[3,4,5];
+  my $year = ($year+1900);
+  my $month = ($month+1);
+  my $date_string = sprintf("%02d-%02d-%d", $year, $month, $mday );
+  # print "$date_string\n";
+  return($date_string);
 };
 
 
