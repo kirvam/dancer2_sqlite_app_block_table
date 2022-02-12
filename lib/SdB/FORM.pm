@@ -11,6 +11,7 @@ my %hash;
 my @array;
 my $flash;
 my $date = create_date_string();
+my($yesterday,$today) = get_yesterday_and_today(5);
 
 sub set_flash {
     my $message = shift;
@@ -659,7 +660,35 @@ sub create_date_string {
   # print "$date_string\n";
   return($date_string);
 };
+###
+sub get_yesterday_and_today{
+my($number_of_days)=@_;
+my $day = ( $number_of_days * ( 60*60*24 ));
+## Yesterday
+##print "\n--- Localtime Yesterday! ----\n";
+#my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) =
+#                                            localtime(time() -60*60*24);
+my ($ysec,$ymin,$yhour,$ymday,$ymon,$yyear,$ywday,$yyday,$yisdst) =
+                                            localtime(time() - $day);
 
+$yyear += 1900;
+$ymon +=1;
+my $yesterday="$yyear-$ymon-$ymday\n";
+
+## Today
+##print "\n--- Localtime Today! ----\n";
+my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) =
+                                            localtime(time);
+$year += 1900;
+$mon += 1;
+my $today="$year-$mon-$mday\n";
+chomp($yesterday);
+chomp($today);
+return($yesterday,$today);
+};
+
+
+###
 
 ############## END #############################################
 
