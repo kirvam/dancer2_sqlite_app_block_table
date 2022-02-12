@@ -574,10 +574,13 @@ post '/adddbblock' => sub {
         print "\$item: $item\n";
            my $clean = cleaner($item);
         ###my($parent,$entryDate,$category,$title,$text,$status) = split(/\;\s?/,$clean);
-           my($parent,$entryParent,$entryType,$handDate,$entryTitle,$authorName,$textNote) = split(/[;,]\s?/,$clean);
+        ###   my($parent,$entryParent,$entryType,$handDate,$entryTitle,$authorName,$textNote) = split(/[;,]\s?/,$clean);
+           my($parent,$entryType,$handDate,$entryTitle,$authorName,$textNote) = split(/[;,]\s?/,$clean);
+
 
            chomp($parent);
-           chomp($entryParent);
+           my $entryParent = $parent;
+         ###  chomp($entryParent);
            chomp($entryType);
            chomp($handDate);
            chomp($entryTitle);
