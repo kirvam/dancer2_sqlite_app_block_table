@@ -210,7 +210,9 @@ print "====== Dumper \%hash =======\n";
 get '/DBDashreport' => sub {
     my $db = connect_db();
     ###my $sql = 'select id, parent, entryDate, title, entryDate, category, text, status from entries order by id';
-    my $sql = 'select id, parent, entryParent, entryType, handDate, entryTitle, authorName, textNote, sqlDate from db_entries order by id';
+   ## my $sql = 'select id, parent, entryParent, entryType, handDate, entryTitle, authorName, textNote, sqlDate from db_entries order by id';
+    my $sql = 'select id, parent, entryParent, entryType, handDate, entryTitle, authorName, textNote from db_entries order by id';
+
 
     ###my $sqlParent = 'select title from entries where parent = \'none\'';
     my $sqlParent = 'select entryParent from db_entries where parent = \'none\'';
@@ -282,7 +284,8 @@ $html = style_ref_HoHoA_1_print_FH(\%hash,$html);
 print "====== Dumper \%hash =======\n";
 print Dumper \%hash;
 print "====== Dumper \%hash =======\n";
-    template 'show_test_FORM_DASH.tt', {
+##    template 'show_test_FORM_DASH.tt', {
+      template 'show_test_FORM_DASHreport.tt', {
                   'msg' => get_flash(),
 #       'add_entry_url' => uri_for('/add'),
 ###        'add_entry_url' => uri_for('/addTESTB'),
@@ -405,11 +408,11 @@ my $big_string = "
 print $fh "$big_string";
 print $fh "<thead bgcolor=\"#ffd\">\n";
 print $fh "<tr style=\"background-color:darkblue; color:white;\">\n";
-print $fh "<td>Date -handDate</td>\n";
-print $fh "<td>Parent Entry</td>\n";
+print $fh "<td>Entry | Date [handDate]</td>\n";
+print $fh "<td>Title Entry</td>\n";
 print $fh "<td>Staff</td>\n";
 print $fh "<td>Note</td>\n";
-print $fh "<td>DB date</td>\n";
+#print $fh "<td>DB date</td>\n";
 print $fh "</tr>\n";
 print $fh "</thead>\n";
 foreach my $key ( sort keys %$hash_ref ){
