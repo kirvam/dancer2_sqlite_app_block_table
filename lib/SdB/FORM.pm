@@ -206,7 +206,101 @@ print "====== Dumper \%hash =======\n";
                 'array' => \@AoAarray,
     };
 };
+###
+get '/DBDashboard' => sub {
+    my $db = connect_db();
+    ###my $sql = 'select id, parent, entryDate, title, entryDate, category, text, status from entries order by id';
+    my $sql = 'select id, parent, entryParent, entryType, handDate, entryTitle, authorName, textNote, sqlDate from db_entries order by id';
 
+    ###my $sqlParent = 'select title from entries where parent = \'none\'';
+    my $sqlParent = 'select entryParent from db_entries where parent = \'none\'';
+
+    # select parent from entries where parent not in ('none')
+    ###my $sqlTitle = 'select distinct title from entries';
+    my $sqlTitle = 'select distinct entryParent from db_entries';
+
+
+    my $sth = $db->prepare($sql) or die $db->errstr;
+    $sth->execute or die $sth->errstr;
+
+    my $stha = $db->prepare($sql) or die $db->errstr;
+    $stha->execute or die $sth->errstr;
+
+    my $sthParent = $db->prepare($sqlParent) or die $db->errstr;
+    $sthParent->execute or die $sth->errstr;
+
+    my $sthTitle = $db->prepare($sqlTitle) or die $db->errstr;
+    $sthTitle->execute or die $sth->errstr;
+      my $entries = $sth->fetchall_hashref('id');
+      print Dumper \$entries;
+      print "Finished dumping \$entries.\n";
+
+      my $list = $stha->fetchall_arrayref();
+      my $listParent = $sthParent->fetchall_arrayref();
+      my $listTitle = $sthTitle->fetchall_arrayref();
+
+    my $spectab = "<p><table><tr><td>dog</td><td>bat</td><td>cow</td></tr></table><p>\n";
+    my $data = $entries;
+      print "Dumper \$list\n";
+      print Dumper \$list;
+      print "Finished Dumping \$list.\n";
+      print Dumper \$listParent;
+      print "Finished Dumping \$listParent.\n";
+      my $listDistinctParent = $listParent;
+        print Dumper \$listDistinctParent;
+        print "Finished Dumping \@listDistinctParent\n";
+        print Dumper \$listTitle;
+        print "Finished Dumping \$listTitle.\n";
+     ###
+my $html = q{};
+my @AoA = ();
+%hash = ();
+@AoA = @{ $list };
+my @AoAParent = @{ $listParent };
+print Dumper \@AoA;
+print "Finished Dumper \@AoA\n";
+print Dumper \@AoAParent;
+print "Finished Dumper \@AoAParent\n";
+
+my @AoAarray;
+foreach my $tt ( 0 .. $#AoAParent ) {
+  foreach my $rr ( 0 .. $#{ $AoAParent[$tt] } ){
+          print $AoAParent[$tt][$rr],"\n";
+          if ( $rr eq 0 ) { push @AoAarray, $AoAParent[$tt][$rr];  };
+        };
+  };
+  my @dropDown = @AoAarray;
+  my @AoAarray = sort @dropDown;
+print "Dumping \@AoAarray\n";
+print Dumper \@AoAarray;
+
+my @array = qw( Project1 Project 2 ProjectX );
+print Dumper \@array;
+print "Finished Dumping \@array\n";
+for_while_loop_2(@AoA);
+$html = style_ref_HoHoA_1_print_FH(\%hash,$html);
+print "====== Dumper \%hash =======\n";
+print Dumper \%hash;
+print "====== Dumper \%hash =======\n";
+    template 'show_test_FORM_DASHBoard.tt', {
+                  'msg' => get_flash(),
+#       'add_entry_url' => uri_for('/add'),
+###        'add_entry_url' => uri_for('/addTESTB'),
+        'add_entry_url' => uri_for('/addFORM'),
+       'edit_entry_url' => uri_for('/editnote_textNote'),
+       'edit_handDate_url' => uri_for('/editnote_handDate'),
+#             'entries' => $sth->fetchall_hashref('id'),
+              'entries' => $entries,
+              'spectab' => $spectab,
+                 'html' => $html,
+           'listParent' => \@AoAParent,
+   'listDistinctParent' => $listDistinctParent,
+             'db_array' => \@array,
+#               'array' => \@array,
+                'array' => \@AoAarray,
+    };
+};
+###
 get '/DBDashreport' => sub {
     my $db = connect_db();
     ###my $sql = 'select id, parent, entryDate, title, entryDate, category, text, status from entries order by id';
