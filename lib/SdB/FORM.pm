@@ -22,10 +22,22 @@ sub set_flash {
 get '/FORM' => sub {
     my $db = connect_db();
     ###my $sql = 'select id, parent, entryDate, title, entryDate, category, text, status from entries order by id';
-    my $sql = 'select id, parent, entryParent, entryType, handDate, entryTitle, authorName, textNote, sqlDate from db_entries order by id';
+  ##  my $sql = 'select id, parent, entryParent, entryType, handDate, entryTitle, authorName, textNote, sqlDate from db_entries order by id';
+
+  ##  my $sql = 'select id, parent, entryParent, entryType, handDate, entryTitle, authorName, textNote, sqlDate from db_entries order by id';
+
+    print "### \$today: $today\n";
+     my $sql = "select * from db_entries where handDate BETWEEN \"$yesterday\" and (select datetime(\'now\',\'localtime\')) order by handDate";
+     ###   my $sql = "select * from db_entries where handDate BETWEEN \"$yesterday\" and \"$today\" order by handDate";
+     print "### \$sql: $sql\n";
+
+  ##   my $sql = 'select * from db_entries where handDate BETWEEN \".$today.'\" and (select datetime(\'now\',\'localtime\')) order by handDate';
+
 
     ###my $sqlParent = 'select title from entries where parent = \'none\'';
-    my $sqlParent = 'select entryParent from db_entries where parent = \'none\'';
+    ### my $sqlParent = 'select entryParent from db_entries where parent = \'none\'';
+    my $sqlParent = 'select distinct entryParent from db_entries';
+
 
     # select parent from entries where parent not in ('none')
     ###my $sqlTitle = 'select distinct title from entries';
@@ -57,12 +69,12 @@ get '/FORM' => sub {
       print Dumper \$list;
       print "Finished Dumping \$list.\n";
       print Dumper \$listParent;
-      print "Finished Dumping \$listParent.\n";
+      print "### Finished Dumping \$listParent.\n";
       my $listDistinctParent = $listParent;
         print Dumper \$listDistinctParent;
-        print "Finished Dumping \@listDistinctParent\n";
+        print "## Finished Dumping \$listDistinctParent\n";
         print Dumper \$listTitle;
-        print "Finished Dumping \$listTitle.\n";
+        print "### Finished Dumping \$listTitle.\n";
      ###
 my $html = q{};
 my @AoA = ();
@@ -70,9 +82,9 @@ my @AoA = ();
 @AoA = @{ $list };
 my @AoAParent = @{ $listParent };
 print Dumper \@AoA;
-print "Finished Dumper \@AoA\n";
+print "## Finished Dumper \@AoA\n";
 print Dumper \@AoAParent;
-print "Finished Dumper \@AoAParent\n";
+print "## Finished Dumper \@AoAParent\n";
 
 my @AoAarray;
 foreach my $tt ( 0 .. $#AoAParent ) {
@@ -107,7 +119,7 @@ print "====== Dumper \%hash =======\n";
                  'html' => $html,
            'listParent' => \@AoAParent,
    'listDistinctParent' => $listDistinctParent,
-             'db_array' => \@array,
+             'db_array' => \@AoAarray,
 #               'array' => \@array,
                 'array' => \@AoAarray,
     };
@@ -211,7 +223,13 @@ get '/DBDashboard' => sub {
     my $db = connect_db();
     ###my $sql = 'select id, parent, entryDate, title, entryDate, category, text, status from entries order by id';
     my $sql = 'select id, parent, entryParent, entryType, handDate, entryTitle, authorName, textNote, sqlDate from db_entries order by id';
+##
+    print "### \$today: $today\n";
+     my $sql = "select * from db_entries where handDate BETWEEN \"$yesterday\" and (select datetime(\'now\',\'localtime\')) order by handDate";
+     ###   my $sql = "select * from db_entries where handDate BETWEEN \"$yesterday\" and \"$today\" order by handDate";
+     print "### \$sql: $sql\n";
 
+##
     ###my $sqlParent = 'select title from entries where parent = \'none\'';
     my $sqlParent = 'select entryParent from db_entries where parent = \'none\'';
 
@@ -295,7 +313,8 @@ print "====== Dumper \%hash =======\n";
                  'html' => $html,
            'listParent' => \@AoAParent,
    'listDistinctParent' => $listDistinctParent,
-             'db_array' => \@array,
+#             'db_array' => \@array,
+             'db_array' => \@AoAarray,
 #               'array' => \@array,
                 'array' => \@AoAarray,
     };
@@ -770,6 +789,7 @@ my ($ysec,$ymin,$yhour,$ymday,$ymon,$yyear,$ywday,$yyday,$yisdst) =
 
 $yyear += 1900;
 $ymon +=1;
+$ymon = sprintf("%02d", $ymon );
 my $yesterday="$yyear-$ymon-$ymday\n";
 
 ## Today
@@ -778,6 +798,7 @@ my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) =
                                             localtime(time);
 $year += 1900;
 $mon += 1;
+$mon = sprintf("%02d", $mon );
 my $today="$year-$mon-$mday\n";
 chomp($yesterday);
 chomp($today);

@@ -33,6 +33,7 @@
              <option value="Initiative" size=30>Initiative</option>
              <option value="Project" size=30>Project</option>
              <option value="Task" size=30>Task</option>
+             <option value="InBox" size=30>InBox</option>
              <option value="Note" size=30>Note</option>
              <option value="Metric" size=30>Metric</option>
           </dd>
