@@ -8,6 +8,7 @@ use Template;
 use Data::Dumper;
 
 my %hash;
+my %thash;
 my @array;
 my $flash;
 my $date = create_date_string();
@@ -27,7 +28,11 @@ get '/FORM' => sub {
   ##  my $sql = 'select id, parent, entryParent, entryType, handDate, entryTitle, authorName, textNote, sqlDate from db_entries order by id';
 
     print "### \$today: $today\n";
-     my $sql = "select * from db_entries where handDate BETWEEN \"$yesterday\" and (select datetime(\'now\',\'localtime\')) order by handDate";
+  ##  my $sql = "select * from db_entries where handDate BETWEEN \"$yesterday\" and (select datetime(\'now\',\'localtime\')) order by handDate";
+
+     my $sql = "select id, parent, entryParent, entryType, handDate, entryTitle, authorName, textNote from db_entries where handDate BETWEEN \"$yesterday\" and (select datetime(\'now\',\'localtime\')) order by handDate";
+
+
      ###   my $sql = "select * from db_entries where handDate BETWEEN \"$yesterday\" and \"$today\" order by handDate";
      print "### \$sql: $sql\n";
 
@@ -77,8 +82,11 @@ get '/FORM' => sub {
         print "### Finished Dumping \$listTitle.\n";
      ###
 my $html = q{};
-my @AoA = ();
 %hash = ();
+my $thtml = q{};
+%thash = ();
+
+my @AoA = ();
 @AoA = @{ $list };
 my @AoAParent = @{ $listParent };
 print Dumper \@AoA;
@@ -103,6 +111,7 @@ print Dumper \@array;
 print "Finished Dumping \@array\n";
 for_while_loop_2(@AoA);
 $html = style_ref_HoHoA_1_print_FH(\%hash,$html);
+$thtml = style_ref_HoHoA_1_print_FH_TEXT(\%hash,$html);
 print "====== Dumper \%hash =======\n";
 print Dumper \%hash;
 print "====== Dumper \%hash =======\n";
@@ -117,6 +126,7 @@ print "====== Dumper \%hash =======\n";
               'entries' => $entries,
               'spectab' => $spectab,
                  'html' => $html,
+#                'thtml' => $thtml,
            'listParent' => \@AoAParent,
    'listDistinctParent' => $listDistinctParent,
              'db_array' => \@AoAarray,
@@ -197,6 +207,9 @@ print Dumper \@array;
 print "Finished Dumping \@array\n";
 for_while_loop_2(@AoA);
 $html = style_ref_HoHoA_1_print_FH(\%hash,$html);
+###
+
+###
 print "====== Dumper \%hash =======\n";
 print Dumper \%hash;
 print "====== Dumper \%hash =======\n";
@@ -481,8 +494,118 @@ sub get_flash {
     $flash = "";
     return $msg;
 }
+###
+sub style_ref_HoHoA_1_print_FH_TEXT {
+my($hash_ref,$html) = @_;
+open  my ($fh), '>', \$html || die "Flaming death on open of $html: $! \n";
+print "\n\n";
+print $fh "<meta http-equiv=\"Content-type\" content=\"text/html; charset=<% settings.charset %>\" />\n";
+print $fh "<title>Dashboard</title>\n";
+print $fh "<!-- Grab jQuery from a CDN, fall back to local if necessary -->\n";
+print $fh "<script src=\"//code.jquery.com/jquery-1.11.1.min.js\"></script>\n";
+print $fh "<!-- End Comments -->\n";
+print $fh "<style>\n";
+print $fh "body {
+    background-color: #ddd;
+}
+h1 {
+   font-family: Consolas, Helvetica, Monospace, Tahoma, sans-serif;
+}
+\n";
+print $fh "\@media screen and (min-width: 480px) {
+    body {
+        background-color: cornflower;
+    }
+}\n";
+print $fh "</style>\n";
+my $big_string = "
+    <!--
+    <div class=page>
+    -->
+    <h1>Summary of Entries -Reporting</h1>
+       <div class=metanav>
+    <!--
+    </div>
+    -->
+  <ul class=entries>
+  <table id=\"rounded-corner\" summary=\"Listing\">
+\n";
+print $fh "$big_string";
+print $fh "<thead bgcolor=\"#ffd\">\n";
+print $fh "<tr style=\"background-color:darkblue; color:white;\">\n";
+print $fh "<td>Entry | Date [handDate]</td>\n";
+print $fh "<td>Title Entry</td>\n";
+print $fh "<td>Staff</td>\n";
+print $fh "</tr><tr><td>Note</td>\n";
+#print $fh "<td>DB date</td>\n";
+print $fh "</tr>\n";
+print $fh "</thead>\n";
+foreach my $key ( sort keys %$hash_ref ){
+         print $fh "<!-- Start Heading -->\n";
+         print $fh "<tbody>\n";
+         print $fh "  <tr style=\"background-color:#E6E6FA;color:black;\" class=\"flip\"; style=\"color:black;\">\n";
+         print $fh "<td rowspan=\"4\">$key</td>\n";
+         print $fh "</tr>\n";
+         print $fh "</tbody>\n";
+          my $count = 0;
+         print $fh "  <tbody class=\"section\" style=\"display:none;\" bgcolor=\"#ffd\">\n";
+          foreach my $entry ( reverse sort keys %{ $hash_ref->{$key} } ){
+             if ($count le 3){
+                    if ( $count == 0 ){
+                    print $fh "<!-- Start Listing  $#array $count-->\n";
+                       print $fh "  <tr style=\"background-color:yellow;color:black;\">\n";
+                      $count++;
+                       } elsif ( $count == 1 ){
+                          print $fh "<!-- Flip Start $#array $count-->\n";
+                          print $fh "  <tr style=\"background-color:lightblue;color:black\">\n";
+                          $count++;
+                        }  else {
+                           print $fh "  <tr style=\"background-color:lightblue;color:black\">\n";
+                           $count++;
+                     };
+              my @array =  $hash_ref->{$key}->{$entry} ;
+                  for my $i ( 0 .. $#array ) {
+                    for my $j ( 3 .. $#{ $array[$i] } ) {
+                       ### Storing last subscript for printing
+                           my $tmp = $#{ $array[$i] };
+                         if ( $j eq $tmp ){
+                                 print $fh " </tr><tr><td>$array[$i][$j]</td><tr>\n";
+                            } else {
+                                print $fh "  <td>$array[$i][$j]</td>\n";
+                        };
+                   }
+             print $fh " </tr>\n";
+                };
+           } else {
+               next;
+        };
+     print $fh "\n";
+   };
+     print $fh " </tbody>\n";
+     print $fh "<!-- End -->\n";
+ };
+my $script = "<script>
+\$('.flip').click(function() {
+    \$(this)
+        .closest('tbody')
+        .next('.section')
+        .toggle('fast');
+});
+</script>
+";
+ print $fh "$script\n";
+ print $fh "</table>\n";
+ print $fh "</div>\n";
+ print $fh "<div id=\"footer\">
+Powered by <a href=\"http://perldancer.org/\">Dancer2</a> 0.205001
+</div>\n";
+ print $fh "</body>\n";
+ print $fh "</html>\n";
+ print $fh "\n\n";
+ return ($html);
+};
 
- 
+### 
 sub style_ref_HoHoA_1_print_FH {
 my($hash_ref,$html) = @_;
 open  my ($fh), '>', \$html || die "Flaming death on open of $html: $! \n";

@@ -68,9 +68,14 @@
   [% END %]
 
   [% html %]
+<!--
+<br>
+<p>
+ <h3>Copy and Paste Version</h3>
+  [% thtml %]
+<p>
 
-
-
+-->
 
   <ul class=entries>
   <table id="rounded-corner" summary="Listing"> 
