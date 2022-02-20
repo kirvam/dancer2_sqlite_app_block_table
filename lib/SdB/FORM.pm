@@ -238,7 +238,11 @@ get '/DBDashboard' => sub {
     my $sql = 'select id, parent, entryParent, entryType, handDate, entryTitle, authorName, textNote, sqlDate from db_entries order by id';
 ##
     print "### \$today: $today\n";
-     my $sql = "select * from db_entries where handDate BETWEEN \"$yesterday\" and (select datetime(\'now\',\'localtime\')) order by handDate";
+     ## my $sql = "select * from db_entries where handDate BETWEEN \"$yesterday\" and (select datetime(\'now\',\'localtime\')) order by handDate";
+     my $sql = "select id, parent, entryParent, entryType, handDate, entryTitle, textNote from db_entries where handDate BETWEEN \"$yesterday\" and (select datetime(\'now\',\'localtime\')) order by handDate";
+
+    ## my $sql = "select id, parent, entryParent, entryType, handDate, entryTitle, textNote where handDate BETWEEN \"$yesterday\" and (select datetime(\'now\',\'localtime\')) order by handDate";
+
      ###   my $sql = "select * from db_entries where handDate BETWEEN \"$yesterday\" and \"$today\" order by handDate";
      print "### \$sql: $sql\n";
 
