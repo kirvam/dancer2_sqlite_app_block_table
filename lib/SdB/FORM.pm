@@ -12,7 +12,7 @@ my %thash;
 my @array;
 my $flash;
 my $date = create_date_string();
-my($yesterday,$today) = get_yesterday_and_today(5);
+my($yesterday,$today) = get_yesterday_and_today(3);
 
 sub set_flash {
     my $message = shift;
@@ -23,23 +23,19 @@ sub set_flash {
 get '/FORM' => sub {
     my $db = connect_db();
     ###my $sql = 'select id, parent, entryDate, title, entryDate, category, text, status from entries order by id';
-  ##  my $sql = 'select id, parent, entryParent, entryType, handDate, entryTitle, authorName, textNote, sqlDate from db_entries order by id';
+    ## my $sql = 'select id, parent, entryParent, entryType, handDate, entryTitle, authorName, textNote, sqlDate from db_entries order by id';
 
-  ##  my $sql = 'select id, parent, entryParent, entryType, handDate, entryTitle, authorName, textNote, sqlDate from db_entries order by id';
+    ## my $sql = 'select id, parent, entryParent, entryType, handDate, entryTitle, authorName, textNote, sqlDate from db_entries order by id';
 
     print "### \$today: $today\n";
-  ##  my $sql = "select * from db_entries where handDate BETWEEN \"$yesterday\" and (select datetime(\'now\',\'localtime\')) order by handDate";
+    ## my $sql = "select * from db_entries where handDate BETWEEN \"$yesterday\" and (select datetime(\'now\',\'localtime\')) order by handDate";
 
-     my $sql = "select id, parent, entryParent, entryType, handDate, entryTitle, authorName, textNote from db_entries where handDate BETWEEN \"$yesterday\" and (select datetime(\'now\',\'localtime\')) order by handDate";
+    my $sql = "select id, parent, entryParent, entryType, handDate, entryTitle, authorName, textNote from db_entries where handDate BETWEEN \"$yesterday\" and (select datetime(\'now\',\'localtime\')) order by handDate";
 
+    ##   my $sql = "select * from db_entries where handDate BETWEEN \"$yesterday\" and \"$today\" order by handDate";
+    print "### \$sql: $sql\n";
 
-     ###   my $sql = "select * from db_entries where handDate BETWEEN \"$yesterday\" and \"$today\" order by handDate";
-     print "### \$sql: $sql\n";
-
-  ##   my $sql = 'select * from db_entries where handDate BETWEEN \".$today.'\" and (select datetime(\'now\',\'localtime\')) order by handDate';
-
-
-    ###my $sqlParent = 'select title from entries where parent = \'none\'';
+    ### my $sqlParent = 'select title from entries where parent = \'none\'';
     ### my $sqlParent = 'select entryParent from db_entries where parent = \'none\'';
     my $sqlParent = 'select distinct entryParent from db_entries';
 
@@ -47,7 +43,6 @@ get '/FORM' => sub {
     # select parent from entries where parent not in ('none')
     ###my $sqlTitle = 'select distinct title from entries';
     my $sqlTitle = 'select distinct entryParent from db_entries';
-
 
     my $sth = $db->prepare($sql) or die $db->errstr;
     $sth->execute or die $sth->errstr;
@@ -126,14 +121,123 @@ print "====== Dumper \%hash =======\n";
               'entries' => $entries,
               'spectab' => $spectab,
                  'html' => $html,
-#                'thtml' => $thtml,
+                'thtml' => $thtml,
            'listParent' => \@AoAParent,
    'listDistinctParent' => $listDistinctParent,
              'db_array' => \@AoAarray,
 #               'array' => \@array,
-                'array' => \@AoAarray,
+#               'array' => \@AoAarray,
     };
 };
+
+###
+get '/FORMTEXT' => sub {
+    my $db = connect_db();
+    print "### \$today: $today\n";
+    ## my $sql = "select * from db_entries where handDate BETWEEN \"$yesterday\" and (select datetime(\'now\',\'localtime\')) order by handDate";
+
+    my $sql = "select id, parent, entryParent, entryType, handDate, entryTitle, textNote from db_entries where handDate BETWEEN \"$yesterday\" and (select datetime(\'now\',\'localtime\')) order by handDate";
+
+    ##   my $sql = "select * from db_entries where handDate BETWEEN \"$yesterday\" and \"$today\" order by handDate";
+    print "### \$sql: $sql\n";
+
+    my $sqlParent = 'select distinct entryParent from db_entries';
+
+    # select parent from entries where parent not in ('none')
+    my $sqlTitle = 'select distinct entryParent from db_entries';
+    my $sth = $db->prepare($sql) or die $db->errstr;
+    $sth->execute or die $sth->errstr;
+
+    my $stha = $db->prepare($sql) or die $db->errstr;
+    $stha->execute or die $sth->errstr;
+
+    my $sthParent = $db->prepare($sqlParent) or die $db->errstr;
+    $sthParent->execute or die $sth->errstr;
+
+    my $sthTitle = $db->prepare($sqlTitle) or die $db->errstr;
+    $sthTitle->execute or die $sth->errstr;
+      my $entries = $sth->fetchall_hashref('id');
+      print Dumper \$entries;
+      print "Finished dumping \$entries.\n";
+
+      my $list = $stha->fetchall_arrayref();
+      my $listParent = $sthParent->fetchall_arrayref();
+      my $listTitle = $sthTitle->fetchall_arrayref();
+
+    my $spectab = "<p><table><tr><td>dog</td><td>bat</td><td>cow</td></tr></table><p>\n";
+    my $data = $entries;
+      print "Dumper \$list\n";
+      print Dumper \$list;
+      print "Finished Dumping \$list.\n";
+      print Dumper \$listParent;
+      print "### Finished Dumping \$listParent.\n";
+      my $listDistinctParent = $listParent;
+        print Dumper \$listDistinctParent;
+        print "## Finished Dumping \$listDistinctParent\n";
+        print Dumper \$listTitle;
+        print "### Finished Dumping \$listTitle.\n";
+     ###
+my $html = q{};
+%hash = ();
+my $thtml = q{};
+%thash = ();
+my $text = q{};
+
+my @AoA = ();
+@AoA = @{ $list };
+print Dumper \@AoA;
+print "## Finished Dumper \@AoA\n";
+
+my @AoAParent = @{ $listParent };
+print Dumper \@AoAParent;
+print "## Finished Dumper \@AoAParent\n";
+
+my @AoAarray;
+foreach my $tt ( 0 .. $#AoAParent ) {
+  foreach my $rr ( 0 .. $#{ $AoAParent[$tt] } ){
+          print $AoAParent[$tt][$rr],"\n";
+          if ( $rr eq 0 ) { push @AoAarray, $AoAParent[$tt][$rr];  };
+        };
+  };
+  my @dropDown = @AoAarray;
+  my @AoAarray = sort @dropDown;
+   print "Dumping \@AoAarray\n";
+   print Dumper \@AoAarray;
+
+##my @array = qw( Project1 Project 2 ProjectX );
+##print Dumper \@array;
+##print "Finished Dumping \@array\n";
+for_while_loop_2(@AoA);
+$html = style_ref_HoHoA_1_print_FH(\%hash,$html);
+my($thtml,$plaintext) = style_ref_HoHoA_1_print_FH_TEXT(\%hash,$html,$text);
+my($text_plain) = make_plaintext_(\%hash,$text);
+print "====== \$plaintext =======\n";
+print "\$plaintext:\n$plaintext\n";
+print "====== Dumper \%hash =======\n";
+print Dumper \%hash;
+print "====== Dumper \%hash =======\n";
+    template 'show_test_FORMTEXT_REPORT.tt', {
+                  'msg' => get_flash(),
+#       'add_entry_url' => uri_for('/add'),
+###        'add_entry_url' => uri_for('/addTESTB'),
+        'add_entry_url' => uri_for('/addFORM'),
+       'edit_entry_url' => uri_for('/editnote_textNote'),
+       'edit_handDate_url' => uri_for('/editnote_handDate'),
+#             'entries' => $sth->fetchall_hashref('id'),
+              'entries' => $entries,
+              'spectab' => $spectab,
+#                'html' => $html,
+                'thtml' => $thtml,
+#           'plaintext' => $plaintext,
+            'plaintext' => $text_plain,
+           'listParent' => \@AoAParent,
+   'listDistinctParent' => $listDistinctParent,
+             'db_array' => \@AoAarray,
+#               'array' => \@array,
+#               'array' => \@AoAarray,
+    };
+};
+###
 ###
 get '/DBDash' => sub {
     my $db = connect_db();
@@ -499,9 +603,11 @@ sub get_flash {
     return $msg;
 }
 ###
+
 sub style_ref_HoHoA_1_print_FH_TEXT {
-my($hash_ref,$html) = @_;
+my($hash_ref,$html,$text) = @_;
 open  my ($fh), '>', \$html || die "Flaming death on open of $html: $! \n";
+open  my ($fhtext), '>', \$text || die "Flaming death on open of $text: $! \n";
 print "\n\n";
 print $fh "<meta http-equiv=\"Content-type\" content=\"text/html; charset=<% settings.charset %>\" />\n";
 print $fh "<title>Dashboard</title>\n";
@@ -539,9 +645,9 @@ print $fh "<thead bgcolor=\"#ffd\">\n";
 print $fh "<tr style=\"background-color:darkblue; color:white;\">\n";
 print $fh "<td>Entry | Date [handDate]</td>\n";
 print $fh "<td>Title Entry</td>\n";
-print $fh "<td>Staff</td>\n";
-print $fh "</tr><tr><td>Note</td>\n";
-#print $fh "<td>DB date</td>\n";
+###print $fh "<td>Staff</td>\n";
+print $fh "<td>Note</td>\n";
+###print $fh "<td>DB date</td>\n";
 print $fh "</tr>\n";
 print $fh "</thead>\n";
 foreach my $key ( sort keys %$hash_ref ){
@@ -549,6 +655,7 @@ foreach my $key ( sort keys %$hash_ref ){
          print $fh "<tbody>\n";
          print $fh "  <tr style=\"background-color:#E6E6FA;color:black;\" class=\"flip\"; style=\"color:black;\">\n";
          print $fh "<td rowspan=\"4\">$key</td>\n";
+         print $fhtext "\n$key\n";
          print $fh "</tr>\n";
          print $fh "</tbody>\n";
           my $count = 0;
@@ -572,13 +679,17 @@ foreach my $key ( sort keys %$hash_ref ){
                     for my $j ( 3 .. $#{ $array[$i] } ) {
                        ### Storing last subscript for printing
                            my $tmp = $#{ $array[$i] };
-                         if ( $j eq $tmp ){
-                                 print $fh " </tr><tr><td>$array[$i][$j]</td><tr>\n";
-                            } else {
-                                print $fh "  <td>$array[$i][$j]</td>\n";
-                        };
+
+##                         if ( $j eq $tmp ){
+##                                 print $fh " </tr><tr><td>$array[$i][$j]</td><tr>\n";
+##                            } else {
+##                                print $fh "  <td>$array[$i][$j]</td>\n";
+##                        };
+                               print $fh "  <td>$array[$i][$j]</td>\n";
+                               print $fhtext "$array[$i][$j]\t";
                    }
              print $fh " </tr>\n";
+             print $fhtext "\n";
                 };
            } else {
                next;
@@ -606,7 +717,7 @@ Powered by <a href=\"http://perldancer.org/\">Dancer2</a> 0.205001
  print $fh "</body>\n";
  print $fh "</html>\n";
  print $fh "\n\n";
- return ($html);
+ return ($html,$text);
 };
 
 ### 
@@ -932,12 +1043,60 @@ chomp($today);
 return($yesterday,$today);
 };
 
+###
+sub make_plaintext_{
+my($hash_ref,$text)=@_;
+open  my ($fhtext), '>', \$text || die "Flaming death on open of $text: $! \n";
+foreach my $key ( sort keys %$hash_ref ){
+         print $fhtext "\n$key\n";
+  foreach my $entry ( reverse sort keys %{ $hash_ref->{$key} } ){
+              my @array =  $hash_ref->{$key}->{$entry} ;
+                  for my $i ( 0 .. $#array ) {
+                    for my $j ( 3 .. $#{ $array[$i] } ) {
+                       ### Storing last subscript for printing
+                       my $tmp = $#{ $array[$i] };
+                         if ( $j eq $tmp ){
+                                 my $line = _format_notes_($array[$i][$j],6);
+                                 ##my $line = $array[$i][$j];
+                                 print $fhtext "$line";
+                            } else {
+                                  my $line = sprintf '%-33s', $array[$i][$j].",";
+                                  print $fhtext "$line";
+                          };
+                        }
+           #     print $fhtext "\n";
+   };
+  };
+ };
+return ($text);
+};
+
+
+sub _format_notes_{
+## my $string = _format_notes_($line,$n);
+my $num_spaces = "66";
+## $string =~ s/^( ){$num_spaces,}//g;
+##
+my($line,$n) = @_;
+my $string;
+my $pat = "([a-z0-9.,!?]+ ?){1,$n}";
+## print "\$pat: $pat\n";
+## print "\n";
+while ($line =~ m/($pat)/ig ){
+    my $val = " ";
+    my $line = sprintf '%-66s', $val;
+    $string .= "$line,$1\n";
+ ##   $string .= "\t^$1^\n";
+ ##   $string .= "\t&#94;$1&#94\n";
+ };
+$string .= "\n";
+$string =~ s/^( ){$num_spaces,}//g;
+return($string);
+};
 
 ###
 
 ############## END #############################################
 
 1;
-
-
 

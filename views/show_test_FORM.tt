@@ -13,6 +13,7 @@
 <p>
 <!-- ADDED eparent to get away from "none" design -not need if you assume first entry is parent using date.
 -->
+
 <label>Enter new Parent of select list:
 <input list="eparent" name="eparent" /></label>
 <datalist id="eparent">
@@ -20,12 +21,7 @@
                 <option value="[% ii %]">
                [% END %]
 </datalist>
-
 <p>
-<!--
--->
-
-
         <dt>Category:</dt>
         <select name=entryType>
          <dd>
@@ -59,8 +55,6 @@
           </dd>
          </select>
 -->
-
-
          <p>
         <dd><input type=submit value=Share></dd>
       </dl>
@@ -68,13 +62,13 @@
   [% END %]
 
   [% html %]
-<!--
-<br>
-<p>
- <h3>Copy and Paste Version</h3>
-  [% thtml %]
-<p>
 
+<!--
+  <br>
+   <p>
+    <h3>Copy and Paste Version</h3>
+    [% thtml %]
+   <p>
 -->
 
   <ul class=entries>
@@ -112,7 +106,7 @@
        </td>
       </tr>
     [% END %]
- </table>
+  </table>
     [% ELSE %]
    <p>
       <li><h3><em>Unbelievable.  No entries here so far!</em></h3></li>
