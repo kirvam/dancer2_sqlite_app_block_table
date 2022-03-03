@@ -1,0 +1,109 @@
+[% IF session.logged_in %]
+    <form action="[% add_entry_url %]" method=post class=add-entry>
+      <dl>
+        <dt>Parent:</dt>
+         <select name=parent>
+        <dd>
+                <option value="none" size=30>--ADD NEW--</option>
+               [% FOREACH ii IN array %]
+                <option value="[% ii %]" size=30>[% ii %]</option>
+               [% END %]
+         </select>
+        </dd>
+<p>
+<!-- ADDED eparent to get away from "none" design -not need if you assume first entry is parent using date.
+-->
+<label>Enter new Parent of select list:
+<input list="eparent" name="eparent" /></label>
+<datalist id="eparent">
+               [% FOREACH ii IN db_array %]
+                <option value="[% ii %]">
+               [% END %]
+</datalist>
+
+<p>
+        <dt>Category:</dt>
+        <select name=entryType>
+         <dd>
+         <option value="BLANK" size=30>--WHICH KIND--</option>
+             <option value="Initiative" size=30>Initiative</option>
+             <option value="Project" size=30>Project</option>
+             <option value="Task" size=30>Task</option>
+             <option value="InBox" size=30>InBox</option>
+             <option value="Note" size=30>Note</option>
+             <option value="Metric" size=30>Metric</option>
+          </dd>
+        </select>
+        <p>
+        <dt>Entry Date [YYYY-MM-DD HH:MM:SS.SSS]:</dt>
+        <dd><input type=text size=30 name=handDate></dd>
+        <dt>Title:</dt>
+        <dd><input type=text size=30 name=entryTitle>
+        <dt>Author[Name,TeamName]:</dt>
+        <dd><input type=text size=30 name=authorName>
+        <dt>Update Note:</dt>
+        <dd><textarea maclength=1000 placeholder="Add entry details here." autofocus name=textNote rows=5 cols=100></textarea>
+
+<!--
+        <dt>Status:</dt>
+        <select name=status>
+         <dd>
+           <option value="BLANK" size=30>--status--</option>
+           <option value="Green" size=30>Green</option>
+           <option value="Yellow" size=30>Yellow/option>
+            <option value="Red" size=30>Red</option>
+          </dd>
+         </select>
+-->
+         <p>
+        <dd><input type=submit value=Share></dd>
+      </dl>
+    </form>
+  [% END %]
+
+<pre>
+  [% plaintext %]
+</pre>
+
+  <ul class=entries>
+  <table id="rounded-corner" summary="Listing"> 
+  [% IF entries.size %]
+    [% FOREACH id IN entries.keys.nsort %]
+      <tr style="background-color:#E6E6FA; color:black;">
+       <td>[% entries.$id.id %]</td>
+       <td>[% entries.$id.handDate %]</td>
+       <td>
+         <form action="[% edit_handDate_url %]" method=post class=add-entry>
+	     <input type=hidden value='[% entries.$id.id %]' name=id></input>
+             <label type=text id=handDate name=handDate>
+             <input type=text size=30 name=handDate>
+             </input>
+             <input type=submit value="Update">
+         </form>
+       </td>
+
+       <td>[% entries.$id.parent %]</td>
+       <td>[% entries.$id.entryParent %]</td>
+       <td>[% entries.$id.entryType %]</td>
+       <td>[% entries.$id.entryTitle %]</td>
+       <td>[% entries.$id.authorName %]</td>
+       <td>[% entries.$id.textNote %]</td>
+       <td>[% entries.$id.sqlDate %]</td>
+       <td>
+         <form action="[% edit_entry_url %]" method=post class=add-entry>
+	     <input type=hidden value='[% entries.$id.id %]' name=id></input>
+             <label type=text id=textNote name=textNote>
+             <input type=text size=50 name=textNote>
+             </input>
+             <input type=submit value="Update">
+         </form>
+       </td>
+      </tr>
+    [% END %]
+ </table>
+    [% ELSE %]
+   <p>
+      <li><h3><em>Unbelievable.  No entries here so far!</em></h3></li>
+   </p>
+ [% END %]
+</ul>
