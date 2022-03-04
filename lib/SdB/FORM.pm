@@ -12,7 +12,7 @@ my %thash;
 my @array;
 my $flash;
 my $date = create_date_string();
-my($yesterday,$today) = get_yesterday_and_today(3);
+my($yesterday,$today) = get_yesterday_and_today(20);
 
 sub set_flash {
     my $message = shift;

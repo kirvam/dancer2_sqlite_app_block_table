@@ -18,6 +18,7 @@ use Data::Dumper;
 my $date = create_date();
 my $dbFlag = "DB_CREATED_FILE.txt";
 my $database = testForFile($dbFlag);
+test_and_copy_DB_File($dbFlag);
 ###
 my %hash;
 my @AoA = ();
@@ -536,7 +537,7 @@ post '/addblock' => sub {
         print "\$item: $item\n";
            my $clean = cleaner($item);
          # my($parent,$category,$title,$text) = split(/\;\s?/,$clean);
-          my($parent,$entryDate,$category,$title,$text,$status) = split(/[;,]\s?/,$clean);
+          my($parent,$entryDate,$category,$title,$text,$status) = split(/[;]\s?/,$clean);
            chomp($parent);
            chomp($entryDate);
            chomp($category);
@@ -576,7 +577,7 @@ post '/adddbblock' => sub {
            my $clean = cleaner($item);
         ###my($parent,$entryDate,$category,$title,$text,$status) = split(/\;\s?/,$clean);
         ###   my($parent,$entryParent,$entryType,$handDate,$entryTitle,$authorName,$textNote) = split(/[;,]\s?/,$clean);
-           my($parent,$entryType,$handDate,$entryTitle,$authorName,$textNote) = split(/[;,]\s?/,$clean);
+           my($parent,$entryType,$handDate,$entryTitle,$authorName,$textNote) = split(/[;]\s?/,$clean);
 
 
            chomp($parent);
@@ -588,7 +589,7 @@ post '/adddbblock' => sub {
            chomp($authorName);
            chomp($textNote);
              ##$textNote =~ s/\<br\>//g;
-             $textNote =~ s/(<br>)//g;
+             $textNote =~ s/(<br>)/  /g;
                if ( $1 ){ print "####  Found and removed $1 ####\n" };
              
            my $sqlDate;
@@ -799,6 +800,31 @@ sub testForFile {
   }
   return($uniqueDbName);
 }
+
+###
+sub test_and_copy_DB_File {
+ my($filename) = @_;
+ my $uniqueDbName;
+  print "Filename: $filename.\n";
+  if (-f $filename) {
+    print "File Exists!\n";
+    open (my $fh, "$filename");
+    my $line = <$fh>;
+    chomp($line);
+    $uniqueDbName = $line;
+    print "DB name: $uniqueDbName.\n";
+      ## my $ls_out =`/usr/bin/ls -lat -1 /tmp/$uniqueDbName`;
+      ## print "\n===\n$ls_out\n===\n";
+      my $cp_cmd ="/usr/bin/cp /tmp/$uniqueDbName /data/";
+       `$cp_cmd`;
+        print "===\n$cp_cmd\n===\n";
+      my $ls_out =`/usr/bin/ls -lat -1 /tmp/$uniqueDbName`;
+        print "===\n$ls_out\n===\n";
+    } else {
+       print "File does not exist. Nothing to do.  -Will copy $filename to /data next start.\n";
+  }
+};
+###
 
 sub openFile {
   my($filename,$uniqueDbName) = @_;

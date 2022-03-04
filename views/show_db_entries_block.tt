@@ -1,7 +1,7 @@
 [% IF session.logged_in %]
     <form action="[% add_entry_url %]" method=post class=add-entry>
       <dl>
-        <dt>Insert Block (Rows) of Text:
+        <dt>Insert Block (Rows) of Text separated by semilcons &#94;&#59;&#94;:
         <dd><textarea name=text rows=15 cols=80></textarea>
         <dd><input type=submit value=Share>
       </dl>
