@@ -13,6 +13,10 @@ my @array;
 my $flash;
 my $date = create_date_string();
 my($yesterday,$today) = get_yesterday_and_today(20);
+chomp($yesterday);
+chomp($today);
+  print "\n### \$yesterday=^$yesterday^";
+  print "\n### \$today=^$today^\n\n";
 
 sub set_flash {
     my $message = shift;
@@ -1028,6 +1032,7 @@ my ($ysec,$ymin,$yhour,$ymday,$ymon,$yyear,$ywday,$yyday,$yisdst) =
 $yyear += 1900;
 $ymon +=1;
 $ymon = sprintf("%02d", $ymon );
+$ymday = sprintf("%02d", $ymday);
 my $yesterday="$yyear-$ymon-$ymday\n";
 
 ## Today
@@ -1037,6 +1042,7 @@ my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) =
 $year += 1900;
 $mon += 1;
 $mon = sprintf("%02d", $mon );
+$mday = sprintf("%02d", $mday );
 my $today="$year-$mon-$mday\n";
 chomp($yesterday);
 chomp($today);
