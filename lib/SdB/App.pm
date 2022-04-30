@@ -513,7 +513,10 @@ get '/Block' => sub {
 get '/DBBlock' => sub {
     my $db = connect_db_2();
 ###    my $sql = 'select id, parent, entryDate, category, title, text, status from entries order by id desc';
-       my $sql = 'select id, parent, entryParent, entryType, handDate, entryTitle, authorName, textNote, sqlDate from db_entries order by id desc';
+###    my $sql = 'select id, parent, entryParent, entryType, handDate, entryTitle, authorName, textNote, sqlDate from db_entries order by id desc';
+
+       my $sql = 'select id, parent, entryParent, entryType, handDate, entryTitle, authorName, textNote, sqlDate from db_entries order by parent asc, handDate desc';
+
 
     my $sth = $db->prepare($sql) or die $db->errstr;
     $sth->execute or die $sth->errstr;
