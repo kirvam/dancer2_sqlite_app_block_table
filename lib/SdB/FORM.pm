@@ -340,10 +340,82 @@ print "====== Dumper \%hash =======\n";
     };
 };
 ###
+get '/DBSorted' => sub {
+    my $db = connect_db();
+    my $sql = 'select id, parent, entryParent, entryType, handDate, entryTitle, authorName, textNote from db_entries order by parent asc, handDate desc';
+    ###my $sql_list = 'select id, parent, entryParent, entryType, handDate, entryTitle, authorName, textNote from db_entries order by parent asc, handDate desc';
+    my $sql_list = 'select parent, entryParent, entryType, handDate, entryTitle, authorName, textNote from db_entries order by parent asc, handDate desc';
+    
+    my $sth = $db->prepare($sql) or die $db->errstr;
+    $sth->execute or die $sth->errstr;
+
+    my $sthlist = $db->prepare($sql_list) or die $db->errstr;
+    $sthlist->execute or die $sth->errstr;
+
+     my $entries = $sth->fetchall_hashref('id');
+     print Dumper \$entries;
+     print "==== Finished dumping \$entries.\n";
+
+     my $list = $sthlist->fetchall_arrayref();
+     print Dumper \$list;
+     print "==== Finished dumping \$list.\n";
+
+my $html = q{};
+my @AoA = ();
+%hash = ();
+@AoA = @{ $list };
+print Dumper \@AoA;
+print "==== Finished Dumper \@AoA\n";
+
+my $html_list;
+my @AoAarray;
+      $html_list .= "<ul>\n";
+foreach my $tt ( 0 .. $#AoA ) {
+        $html_list .= "<li>";
+  foreach my $rr ( 0 .. $#{ $AoA[$tt] } ){
+          my $last = $#{ $AoA[$tt] };
+           if ( $rr eq $last ) { 
+                                print "$AoA[$tt][$rr]"; 
+                                $html_list .= "$AoA[$tt][$rr]"
+                            }  else { 
+                                 print "$AoA[$tt][$rr]; "; 
+                                 $html_list .= "$AoA[$tt][$rr]; "                      
+                      };
+            };
+               $html_list .= "</li>";
+
+};
+$html_list .= "</ul>\n";
+
+##print "====\n$html_list\n====\n";
+
+###$html = style_ref_HoHoA_1_print_FH(\%hash,$html);
+###print "====== Dumper \%hash =======\n";
+###print Dumper \%hash;
+###print "====== Dumper \%hash =======\n";
+        template 'show_test_FORM_DBSorted.tt', {
+
+                  'msg' => get_flash(),
+        'add_entry_url' => uri_for('/addFORM'),
+       'edit_entry_url' => uri_for('/editnote_textNote'),
+       'edit_handDate_url' => uri_for('/editnote_handDate'),
+#             'entries' => $sth->fetchall_hashref('id'),
+              'entries' => $entries,
+#              'spectab' => $spectab,
+                 'html' => $html_list,
+#           'listParent' => \@AoAParent,
+#   'listDistinctParent' => $listDistinctParent,
+#             'db_array' => \@array,
+             'db_array' => \@AoA,
+#               'array' => \@array,
+#               'array' => \@AoAarray,
+    };
+};
+###
 get '/DBDashboard' => sub {
     my $db = connect_db();
     ###my $sql = 'select id, parent, entryDate, title, entryDate, category, text, status from entries order by id';
-    my $sql = 'select id, parent, entryParent, entryType, handDate, entryTitle, authorName, textNote, sqlDate from db_entries order by id';
+    ###my $sql = 'select id, parent, entryParent, entryType, handDate, entryTitle, authorName, textNote, sqlDate from db_entries order by id';
 ##
     print "### \$today: $today\n";
      ## my $sql = "select * from db_entries where handDate BETWEEN \"$yesterday\" and (select datetime(\'now\',\'localtime\')) order by handDate";
@@ -765,7 +837,7 @@ print $fh "<thead bgcolor=\"#ffd\">\n";
 print $fh "<tr style=\"background-color:darkblue; color:white;\">\n";
 print $fh "<td>Entry | Date [handDate]</td>\n";
 print $fh "<td>Title Entry</td>\n";
-print $fh "<td>Staff</td>\n";
+#print $fh "<td>Staff</td>\n";
 print $fh "<td>Note</td>\n";
 #print $fh "<td>DB date</td>\n";
 print $fh "</tr>\n";
@@ -1062,7 +1134,7 @@ foreach my $key ( sort keys %$hash_ref ){
                        ### Storing last subscript for printing
                        my $tmp = $#{ $array[$i] };
                          if ( $j eq $tmp ){
-                                 my $line = _format_notes_($array[$i][$j],6);
+                                 my $line = _format_notes_($array[$i][$j],7);
                                  ##my $line = $array[$i][$j];
                                  print $fhtext "$line";
                             } else {
