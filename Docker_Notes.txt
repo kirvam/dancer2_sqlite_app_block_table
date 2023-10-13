@@ -24,4 +24,12 @@ docker run -v /Users/paulhaigh/docker/data:/data --name DEV2 -p5009:5009 -it cen
 08/16/2021
 docker run -v /Users/paulhaigh/docker/data:/data --name CAPDEV2 -p5009:5009 -it c_7_3_dev_vm 
 
+10/13/2023
+
+cat .git/HEAD
+
+git rev-parse --show-toplevel
+
+dancer2_sqlite_app_block_table
+
 
