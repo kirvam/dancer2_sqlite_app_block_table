@@ -1,0 +1,5 @@
+[% IF session.logged_in %]  
+  [% html %]
+ [% ELSE %]
+  <p>Please login!</p>
+[% END %]

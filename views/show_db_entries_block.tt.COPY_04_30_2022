@@ -10,13 +10,13 @@
   <ul class=entries>
   [% IF db_entries.size %]
     [% FOREACH id IN db_entries.keys.nsort %]
-      <li>
-          [% db_entries.$id.parent %]&semi; 
+      <li>[% db_entries.$id.parent %]&semi; 
           [% db_entries.$id.entryParent %]&semi; 
           [% db_entries.$id.handDate %]&semi; 
           [% db_entries.$id.entryTitle | html %]&semi; 
           [% db_entries.$id.authorName | html %]&semi; 
-          [% db_entries.$id.textNote | html %] 
+          [% db_entries.$id.textNote | html %]&semi; 
+          [% db_entries.$id.sqlDate %]
     [% END %]
   [% ELSE %]
     <li><em>Unbelievable.  No entries here so far</em>
